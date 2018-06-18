@@ -1,3 +1,4 @@
+﻿
 /* 1. Cantidad de vuelos */
 SELECT COUNT(*) cantidadVuelos FROM flights
 
