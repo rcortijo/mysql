@@ -42,6 +42,7 @@ que las compañías con más cancelaciones aparezcan las primeras.*/
 SELECT 
 	B.Description, COUNT(A.cancelled) AS vuelosCancelados
 FROM flights A INNER JOIN carriers B ON A.UniqueCarrier = B.CarrierCode
+WHERE A.cancelled=1
 GROUP BY B.Description ORDER BY vuelosCancelados DESC
 
 
