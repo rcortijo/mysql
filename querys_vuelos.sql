@@ -1,6 +1,6 @@
 ﻿
 /* 1. Cantidad de vuelos */
-SELECT COUNT(*) cantidadVuelos FROM flights
+SELECT COUNT(*) AS cantidadVuelos FROM flights
 
 
 /* 2. Retraso promedio de salida y llegada según el aeropuerto origen */
@@ -21,7 +21,7 @@ SELECT
 	AVG(ArrDelay)) AS retrasoPromedioLlegadaEnMinutos
 FROM flights
 GROUP BY Origin,colYear,colMonth
-
+ORDER BY Origin,colYear,colMonth ASC
 
 /*4. Retraso promedio de llegada de los vuelos, por meses y según el aeropuerto origen (misma
 consulta que antes y con el mismo orden). Pero además, ahora quieren que en vez
@@ -34,12 +34,13 @@ SELECT
 	AVG(A.ArrDelay)) AS retrasoPromedioLlegadaEnMinutos
 FROM flights A INNER JOIN usairports B ON A.Origin = B.IATA
 GROUP BY A.Origin,A.colYear,A.colMonth
+ORDER BY A.Origin,A.colYear,A.colMonth ASC
 
 
 /*5. Las compañías con más vuelos cancelados. Además, deben estar ordenadas de forma
 que las compañías con más cancelaciones aparezcan las primeras.*/
 SELECT 
-	B.Description, SUM(A.cancelled) AS vuelosCancelados
+	B.Description, COUNT(A.cancelled) AS vuelosCancelados
 FROM flights A INNER JOIN carriers B ON A.UniqueCarrier = B.CarrierCode
 GROUP BY B.Description ORDER BY vuelosCancelados DESC
 
@@ -47,9 +48,9 @@ GROUP BY B.Description ORDER BY vuelosCancelados DESC
 /* 6. El identificador de los 10 aviones que más kilómetros han recorrido haciendo vuelos
 comerciales: */
 SELECT 
-	B.Description, SUM(A.Distance) AS distanciaRecorrida
-FROM flights A INNER JOIN carriers B ON A.UniqueCarrier = B.CarrierCode
-GROUP BY B.Description ORDER BY distanciaRecorrida DESC 
+	A.TailNum, SUM(A.Distance) AS distanciaRecorrida
+FROM flights A
+GROUP BY A.TailNum ORDER BY distanciaRecorrida DESC 
 LIMIT 10
 
 
